@@ -1,4 +1,5 @@
 import sys
+import time
 from P4 import P4, P4Exception
 
 p4 = P4()
@@ -61,6 +62,13 @@ def init(username=None, port=None, password=None):
 
     return True
 
+def monitor_checkouts():
+    """Monitor for new checkouts and lock them."""
+    print("Monitoring for file checkouts...")
+    while True:
+        lock_checked_out_files()  # Lock any newly checked-out files
+        time.sleep(10)  # Check every 10 seconds (adjust the interval as needed)
+
 def main(*paths):
     """Main function to control locking and unlocking based on paths."""
     if not paths:
@@ -68,7 +76,7 @@ def main(*paths):
         return
 
     for path in paths:
-        if path.startswith("//"):  # If it's a depot path, lock checked out files
+        if path.startswith("//"):  # If it's a depot path, lock checked-out files
             lock_checked_out_files()
         else:  # Otherwise, it's assumed to be a changelist ID, unlock files in changelist
             unlock_files_in_changelist(path)
@@ -77,5 +85,12 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: p4-lock-unlock <depot_path_or_changelist_id>")
         sys.exit(1)
-        main(*sys.argv[1:])
+
+    try:
+        init(username="your-username", password="your-password", port="perforce-server:1666")
+        # Start monitoring checkouts for automatic locking
+        monitor_checkouts()
+    except P4Exception as e:
+        print(f"Error: {e}")
+    finally:
         disconnect()
