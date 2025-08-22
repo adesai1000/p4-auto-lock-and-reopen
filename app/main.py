@@ -77,11 +77,5 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: p4-lock-unlock <depot_path_or_changelist_id>")
         sys.exit(1)
-
-    try:
-        init(username="your-username", password="your-password", port="perforce-server:1666")
-        main(*sys.argv[1:])  # Pass the arguments to the main function
-    except P4Exception as e:
-        print(f"Error: {e}")
-    finally:
+        main(*sys.argv[1:])
         disconnect()
