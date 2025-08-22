@@ -1,0 +1,1 @@
+pyinstaller --onefile --windowed --distpath .\bin\Windows_x86 -n "p4-revert-exclusive-checkout" .\app\main.py
