@@ -1,0 +1,9 @@
+# Compiled python bytecode
+*.pyc
+
+# Your actual configuration
+content_checker_config.yaml
+
+# Right now our change-commit script is just some internal
+# stuff that's not really usable for other people.
+change-commit.py
